@@ -61,19 +61,12 @@ const data = [
     }
 ];
 
-export const MapChart = () => {
-    const [events, setEvents] = useState([])
+export const MapChart = ({ events }) => {
     const [loading, setLoading] = useState(true)
     const [mapOptions, setMapOptions] = useState({})
     const [selected, setSelected] = useState(Array(events.length).fill(false))
     const [isVisible, setIsVisible] = useState(false)
 
-    console.log(events)
-
-    // Fetch traffic info on component mount
-    useEffect(() => {
-        getTrafficData()
-    }, [])
 
     useEffect(() => {
         if (events.length !== 0) {
@@ -81,14 +74,7 @@ export const MapChart = () => {
         }
     }, [events])
 
-    // Function for requesting traffic information from API
-    async function getTrafficData() {
-        await fetch(`http://api.511.org/Traffic/Events?api_key=${process.env.REACT_APP_API_KEY}`)
-            .then(res => res.json())
-            .then(data => {
-                setEvents(data.events)
-            })
-    };
+    
 
     // Highcharts map chart configuration
     function createMapChart(events) {
@@ -109,7 +95,7 @@ export const MapChart = () => {
                 direction: event.roads[0].direction
             })
         );
-        
+
 
         const mapOpt = {
             chart: {

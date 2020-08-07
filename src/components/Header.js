@@ -15,7 +15,7 @@ export const Header = ({ history }) => {
     const location = useLocation();
 
     return (
-        <Navbar>
+        <Navbar className="bg-blue-800 text-white">
             <Navbar.Group align={Alignment.LEFT} className="w-full">
                 <Navbar.Heading><span className="font-bold md:font-semibold">Dreamdata Code Challange</span></Navbar.Heading>
                 <Navbar.Divider className="hidden md:block"/>

@@ -20,3 +20,23 @@ code {
 .highcharts-tooltip {
   display: flex;
 }
+
+.highcharts-container {
+  display: flex;
+  width: 100vw !important;
+  height: 380px !important;
+  align-items: center;
+}
+
+.highcharts-yaxis {
+  display: none;
+}
+
+.highcharts-credits {
+  display: none;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
