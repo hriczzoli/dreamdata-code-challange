@@ -18,11 +18,11 @@ const Button = ({ color, label, viewName, view, setView }) => {
     const containerStyles = active ? `border-${color}-600 text-gray-700 border-b-2` : `text-gray-700`
 
     return (
-        <button
-            className={`w-full py-2 px-3 font-bold ${containerStyles}`}
+        <div
+            className={`w-full py-2 px-3 font-bold ${containerStyles} flex justify-center`}
             onClick={() => setView(viewName)}
         >
             <span className="mr-1">{label}</span>
-        </button>
+        </div>
     )
 }

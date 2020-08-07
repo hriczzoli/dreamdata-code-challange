@@ -240,12 +240,12 @@ export const EventListItem = ({ e, showEventOnMap, selected, setIsVisible, index
                 .replace('T', ' at ')}
             </span>
             <div className="w-full flex items-center justify-end">
-              <button
+              <div
                 className="text-blue-600 font-bold mr-4"
                 onClick={() => {showEventOnMap(e.id); selectEvent(index); setIsVisible(true)}}
               >
                 SHOW
-              </button>
+              </div>
             </div>
           </div>
         </div>

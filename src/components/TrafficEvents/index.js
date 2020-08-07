@@ -75,7 +75,7 @@ export const Events = () => {
                         <TrafficColumnChart events={events}/>
 
                         <div className="flex flex-col fixed bottom-0 w-full shadow-lg overflow-auto bg-gray-100" style={{height: '19rem'}}>
-                            <p className="text-lg font-semibold pl-4 sticky top-0 bg-blue-600 text-white z-10 pt-4 pb-4">Counties</p>
+                            <p className="text-lg font-semibold pl-4 sticky top-0 bg-blue-600 text-white z-10 pt-4 pb-4 shadow-lg">Counties</p>
                             <div className="p-4">
                                 <Tree name="Counties" defaultOpen>
                                     {
