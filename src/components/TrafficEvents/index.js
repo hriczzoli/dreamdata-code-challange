@@ -4,10 +4,12 @@ import MapChart from '../Charts/mapChart';
 import TrafficColumnChart from '../Charts/columnChart';
 import { Switch } from './switch';
 import Tree from '../Collapse/index';
+import Filter from '../Helpers/filter';
 
 export const Events = () => {
-    const [view, setView] = useState('MAP')
-    const [events, setEvents] = useState([])
+    const [view, setView] = useState('MAP');
+    const [events, setEvents] = useState([]);
+    const [filteredList, setFilteredList] = useState([]);
 
     // Fetch traffic info on component mount
     useEffect(() => {
@@ -44,8 +46,6 @@ export const Events = () => {
             })
         );
 
-        console.log(eventList)
-
     // Reduce events to display organized list of data
     const reducedEvents = Object.values(eventList.reduce((a, {name, keyword, roadsState}) => {
         a[name] = a[name] || {name, y: 0, keyword, roadsState, drilldown: name, id: name, data: []};
@@ -61,26 +61,95 @@ export const Events = () => {
         })
     })
 
-    console.log(reducedEvents)
+    // Filtering the map to only display SF Bay Areay
+    const data = [
+        {
+            'hc-key': 'us-ca-097',
+            'hc-a2': "SO",
+            'name': 'Sonoma'
+        },
+        {
+            'hc-key': 'us-ca-055',
+            'hc-a2': "NA",
+            'name': 'Napa'
+        },
+        {
+            'hc-key': 'us-ca-041',
+            'hc-a2': 'MA',
+            'name': 'Marin'
+        },
+        {
+            'hc-key': 'us-ca-095',
+            'hc-a2': "SO",
+            'name': 'Solano'
+        },
+        {
+            'hc-key': 'us-ca-013',
+            'hc-a2': "CC",
+            'name': 'Contra Costa'
+        },
+        {
+            'hc-key': 'us-ca-001',
+            'hc-a2': "AL",
+            'name': 'Alameda'
+        },
+        {
+            'hc-key': 'us-ca-085',
+            'hc-a2': "SC",
+            'name': 'Santa Clara'
+        },
+        {
+            'hc-key': 'us-ca-081',
+            'hc-a2': "SM",
+            'name': 'San Mateo'
+        },
+        {
+            'hc-key': 'us-ca-075',
+            'hc-a2': "SF",
+            'name': 'San Francisco'
+        }
+    ];
+
+    // Filter counties
+    const handleFilterMapData = (countiesList) => {
+        const localList = [];
+        if (countiesList.lenght !== 0) {
+            countiesList.map((county) => {
+                data.map((d) => {
+                    if (county === d.name) {
+                        localList.push(d)
+                    }
+                })
+            })
+            setFilteredList(localList)
+        }
+    }
+
+    const resetMapData = () => {
+        setFilteredList(data)
+    }
 
     return (
         <div>
             <Switch setView={setView} view={view} />
             {
                 view === 'MAP' ?
-                    <MapChart events={events}/>
+                    <>
+                        <Filter counties={reducedEvents} handleFilterMapData={handleFilterMapData} filteredList={filteredList} resetMapData={resetMapData}/>
+                        <MapChart events={events} filteredCounties={filteredList} data={data}/>
+                    </>
                 :
                     <>
                         <p className="text-center text-xl">SF Bay Area</p>
                         <TrafficColumnChart events={events}/>
 
                         <div className="flex flex-col fixed bottom-0 w-full shadow-lg overflow-auto bg-gray-100" style={{height: '19rem'}}>
-                            <p className="text-lg font-semibold pl-4 sticky top-0 bg-blue-600 text-white z-10 pt-4 pb-4 shadow-lg">Counties</p>
+                            <p className="text-lg font-semibold pl-4 sticky top-0 bg-blue-700 text-white z-10 pt-4 pb-4 shadow-lg">Counties</p>
                             <div className="p-4">
-                                <Tree name="Counties" defaultOpen>
+                                <Tree name="Counties" defaultOpen hasIcon={false}>
                                     {
                                         reducedEvents.map((event) => {
-                                            return <Tree key={event.id} name={`${event.name} - ${event.y}`}>
+                                            return <Tree key={event.id} name={`${event.name} - ${event.y}`} hasIcon={true}>
                                                 {
                                                     event.data.map((data) => {
                                                         return <Tree key={data.id} name={`${data.name} - ${data.keyword}`}>
@@ -90,7 +159,7 @@ export const Events = () => {
                                                                 <span><span className="font-semibold">Direction:</span> {data.direction}</span>
                                                                 <span><span className="font-semibold">From:</span> {data.from}</span>
                                                                 <span><span className="font-semibold">To:</span> {data.to}</span>
-                                                                <span><span className="font-semibold">Updated:</span> {data.updated}</span>
+                                                                <span><span className="font-semibold mb-4">Updated:</span> {data.updated}</span>
                                                             </div>
                                                         </Tree>
                                                     })

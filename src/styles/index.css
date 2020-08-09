@@ -24,7 +24,7 @@ code {
 .highcharts-container {
   display: flex;
   width: 100vw !important;
-  height: 380px !important;
+  height: 390px !important;
   align-items: center;
 }
 

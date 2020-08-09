@@ -72,6 +72,21 @@ export const TrafficColumnChart = ({ events }) => {
       return a;
     }, Object.create(null)))
 
+    reducedIncidents.map((re) => {
+      eventList.map((event) => {
+        if (re.name === event.name) {
+          const info = {
+            keyword: event.keyword,
+            road_state: event.roadState
+          }
+          re.data.push([event.from, 1, info])
+        }
+      })
+    })
+
+    // Create drilldown list
+    const drilldownList = reducedEvents.concat(reducedIncidents)
+
     const columnOpt = {
       chart: {
         type: 'column',
@@ -80,7 +95,7 @@ export const TrafficColumnChart = ({ events }) => {
         text: 'Number of traffic events in each county',
       },
       subtitle: {
-        text: 'Click the columns to view more detailed info',
+        text: 'Click the columns to which areas are affected',
       },
       accessibility: {
         announceNewData: {
@@ -127,7 +142,7 @@ export const TrafficColumnChart = ({ events }) => {
         },
       ],
       drilldown: {
-        series: reducedEvents,
+        series: drilldownList,
       },
     };
 
@@ -138,7 +153,7 @@ export const TrafficColumnChart = ({ events }) => {
   return (
     <div className="flex justify-center">
       {loading ? (
-        <Spinner className="m-auto" />
+        <Spinner className="mt-24" />
       ) : (
         <div className="flex items-center overflow-hidden" style={{ maxHeight: '300px', maxWidth: '100vw' }}>
           <ColumnChart highcharts={Highcharts} options={columnOptions} id="barChart"/>
