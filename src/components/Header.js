@@ -21,13 +21,13 @@ export const Header = ({ history }) => {
                 <Navbar.Divider className="hidden md:block"/>
                 <div className="hidden sm:hidden md:flex">
                     <Link to="/" className={location.pathname === "/" ? `bg-gray-300 rounded` : ''}><Button className="bp3-minimal" icon="path-search" text="Events" /></Link>
-                    <Link to="/dashboard" className={location.pathname === "/dashboard" ? `bg-gray-300 rounded` : ''}><Button className="bp3-minimal" icon="route" text="Bus" /></Link>
+                    <Link to="/transit" className={location.pathname === "/transit" ? `bg-gray-300 rounded` : ''}><Button className="bp3-minimal" icon="route" text="Transit" /></Link>
                 </div>
                 <div className="md:hidden ml-auto">
                     <Popover content={
                         <Menu>
                             <Menu.Item icon="path-search"  text="Events" onClick={() => history.push('/')} className={location.pathname === "/" ? `bg-gray-300 rounded` : ''}/>
-                            <Menu.Item icon="route"  text="Bus" onClick={() => history.push('/dashboard')} className={location.pathname === "/dashboard" ? `bg-gray-300 rounded` : ''}/>
+                            <Menu.Item icon="route"  text="Transit" onClick={() => history.push('/transit')} className={location.pathname === "/transit" ? `bg-gray-300 rounded` : ''}/>
                         </Menu>
                     } position={Position.BOTTOM}>
                         <Icon icon="menu" iconSize="25" className=""/>

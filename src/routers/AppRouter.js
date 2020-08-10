@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 
 import Header from '../components/Header';
 import Events from '../components/TrafficEvents/index';
-import Dashboard from '../components/Dashboard';
+import Transit from '../components/Transit/index';
 
 export const history = createBrowserHistory();
 
@@ -15,7 +15,7 @@ const AppRouter = () => {
                 <Header history={history}/>
                 <Switch>
                     <Route path="/" component={Events} exact={true} />
-                    <Route path="/dashboard" component={Dashboard} />
+                    <Route path="/transit" component={Transit} />
                 </Switch>
             </div>
         </Router>

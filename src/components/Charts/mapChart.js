@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Highcharts, { mapChart, chart } from 'highcharts';
+import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import highchartsMap from "highcharts/modules/map";
 import proj4 from "proj4";
@@ -46,7 +46,7 @@ export const MapChart = ({ events, data, filteredCounties }) => {
     }, [filteredCounties])
 
     // Highcharts map chart configuration
-    function createMapChart(events, mapData) {
+    const createMapChart = (events, mapData) => {
         const eventList = [];
         events.map((event) => 
             eventList.push({

@@ -23,7 +23,7 @@ export const TrafficColumnChart = ({ events }) => {
   }, [events])
 
   // Highcharts ColumnChart configuration
-  function createColumnChart(events) {
+  const createColumnChart = (events) => {
     const eventList = [];
     events.map((event) =>
       eventList.push({
