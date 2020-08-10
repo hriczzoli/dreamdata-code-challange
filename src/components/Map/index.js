@@ -14,7 +14,7 @@ const CustomMap = ({ lat, lon, mapData }) => {
     return (
         <div style={{width: '100vw', height: '60vh'}}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyCZGRe72PCZgnFRnXOp_T6L4SKQo3z_lJs' }}
+          bootstrapURLKeys={{ key: apiKey }}
           defaultCenter={center}
           defaultZoom={zoom}
         >
@@ -44,8 +44,8 @@ const Marker = ({ lat, lng, mapData }) => {
                 <div className="flex flex-col p-2" style={{minWidth: '70vw'}}>
                     <p className="text-xl mb-2">{mapData.areas[0].name}</p>
                     <span>{mapData.event_type}</span>
-                    <span>{mapData.status}</span>
-                    <span>{mapData.roads[0].state}</span>
+                    <span>Status: {mapData.status}</span>
+                    <span>State: {mapData.roads[0].state}</span>
                     <span>From: {mapData.roads[0].from}</span>
                     <span>Direction: {mapData.roads[0].direction}</span>
                     <div className="flex justify-end w-full mt-6">

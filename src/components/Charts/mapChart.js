@@ -66,6 +66,15 @@ export const MapChart = ({ events, data, filteredCounties }) => {
             })
         );
 
+        const constructions = eventList.filter((ev) => {
+          return ev.keyword === 'CONSTRUCTION'
+        })
+
+        // Filter out INCIDENTS for chart
+        const incidents = eventList.filter((ev) => {
+          return ev.keyword === 'INCIDENT'
+        })
+
         const mapOpt = {
             chart: {
                 panning: true,
@@ -111,14 +120,32 @@ export const MapChart = ({ events, data, filteredCounties }) => {
             }, {
               // Specify points using lat/lon
               type: 'mappoint',
-              name: 'Events',
+              name: 'Constructions',
               color: '#ed8936',
-              data: eventList,
+              data: constructions,
               dataLabels: {
                 enabled: true,
                 format: '{point.keyword}',
                 style: {
                     color: '#ed8936'
+                }
+              },
+              tooltip: {
+                headerFormat: '',
+                pointFormat: `<div><span>{point.keyword}</span><br><span>Status: {point.status}</span> <br><span>State: {point.roadsState}</span> <br><span>From: {point.from}</span> <br><span>To: {point.to}</span> <br><span>Direction: {point.direction}</span> <br><span>Updated: {point.updated}</span></div>`
+              },
+              cursor: 'pointer',
+            }, {
+              // Specify points using lat/lon
+              type: 'mappoint',
+              name: 'Incidents',
+              color: '#e53e3e',
+              data: incidents,
+              dataLabels: {
+                enabled: true,
+                format: '{point.keyword}',
+                style: {
+                    color: '#e53e3e'
                 }
               },
               tooltip: {

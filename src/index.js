@@ -5,6 +5,7 @@ import './tailwind.output.css';
 import * as serviceWorker from './serviceWorker';
 
 import AppRouter from './routers/AppRouter';
+require('dotenv').config()
 
 ReactDOM.render(
     <AppRouter />,

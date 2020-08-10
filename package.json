@@ -10,6 +10,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "chokidar-cli": "^2.1.0",
+    "dotenv": "^8.2.0",
     "google-map-react": "^2.0.8",
     "highcharts": "^8.1.2",
     "highcharts-react-official": "^3.0.0",
