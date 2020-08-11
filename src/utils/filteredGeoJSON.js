@@ -44,5 +44,10 @@ export const data = [
         'hc-key': 'us-ca-075',
         'hc-a2': "SF",
         'name': 'San Francisco'
+    },
+    {
+        'hc-key': 'us-ca-077',
+        'hc-a2': 'SJ',
+        'name': 'San Joaquin'
     }
 ];

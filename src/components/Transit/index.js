@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Icon, Tab, Tabs, Spinner } from "@blueprintjs/core";
 import { Cell, Column, Table } from "@blueprintjs/table"; 
 
+import Tree from '../Collapse/index';
+
 export const Transit = () => {
     const [step, setStep] = useState("")
     const [operators, setOperators] = useState(
@@ -22,14 +24,8 @@ export const Transit = () => {
     const [lineID, setLineId] = useState("")
     const [timetable, setTimetable] = useState([])
     const [view, setView] = useState("")
-    const [loading, setLoading] = useState(false)
-
-    // To fetch PATTERN - time chedule with stops
-    // useEffect(() => {
-    //     fetch(`http://api.511.org/transit/pattern?api_key=${process.env.REACT_APP_API_KEY}&operator_id=BA&pattern_id=676390`)
-    //                 .then(res => res.json())
-    //                 .then(data => {console.log(data)})
-    // }, [])
+    const [selectedTable, setSelectedTable] = useState({})
+    const [pattern, setPattern] = useState()
 
     useEffect(() => {
         getTransitData(step, selectedOperator)
@@ -40,17 +36,12 @@ export const Transit = () => {
         if (lineID !== "") {
             console.log(lineID)
             getTransitData(step, selectedOperator, lineID)
+            getTransitData("patterns", selectedOperator, lineID)
         }
     }, [lineID])
 
-    useEffect(() => {
-        if (timetable.length !== 0) {
-            setLoading(true)
-        }
-    }, [timetable])
-
     
-    async function getTransitData(step, operator_id = "", line_id = "", pattern_id) {
+    async function getTransitData(step, operator_id = "", line_id = "") {
         switch (step){
             case "lines":
                 await fetch(`http://api.511.org/transit/${step}?api_key=${process.env.REACT_APP_API_KEY}&operator_id=${operator_id}`)
@@ -62,17 +53,23 @@ export const Transit = () => {
                     .then(res => res.json())
                     .then(data => {setTimetable(data.Content.TimetableFrame); console.log(data)})
                 break;
-            case "pattern":
-                await fetch(`http://api.511.org/transit/${step}?api_key=${process.env.REACT_APP_API_KEY}&operator_id=${operator_id}&&pattern_id=${pattern_id}`)
+            case "patterns":
+                await fetch(`http://api.511.org/transit/patterns?api_key=${process.env.REACT_APP_API_KEY}&operator_id=${operator_id}&line_id=${line_id}`)
                     .then(res => res.json())
-                    .then(data => {console.log(data)})
+                    .then(data => {console.log(data.journeyPatterns); setPattern(data.journeyPatterns)})
                 break;
         }
     }
 
-    const showTimeTable = () => {
-
-    }
+    useEffect(() => {
+        if (view !== "") {
+            timetable.map((t) => {
+                if (view === t.Name) {
+                    setSelectedTable(t)
+                }
+            })
+        }
+    }, [view])
 
     return (
         <div>
@@ -97,7 +94,7 @@ export const Transit = () => {
                             <Icon icon="layout-linear" iconSize={25} className="m-auto text-gray-400"/>
                         :
                         lines.length !== 0 ?
-                        <ul className="p-2 shadow-inner overflow-auto" style={{height: '32vh'}}>
+                        <ul className="p-2 shadow-inner overflow-auto" style={{height: '23vh'}}>
                         {
                             lines.map((line) => {
                                 return <li 
@@ -139,7 +136,8 @@ export const Transit = () => {
                                 })
                             }
                             </select>
-                            <Timetable view={view || ""} timetable={timetable}/>
+                            {/* Timetable component */}
+                            <Timetable pattern={pattern} table={selectedTable}/>
                         </div>
                         :
                         timetable === undefined ?
@@ -155,24 +153,98 @@ export const Transit = () => {
 
 export default Transit;
 
-const Timetable = ({ view, timetable }) => {
-    const [table, setTable] = useState({})
+const Timetable = ({ pattern, table }) => {
+    const [schedule, setSchedule] = useState({})
+    const [pat, setPat] = useState([])
+    const [loading, setLoading] = useState(true)
+    
+    //Check if object is empty
+    const isEmpty = (obj) => {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
 
     useEffect(() => {
-        if (view !== "") {
-            timetable.map((t) => {
-                if (view === t.Name) {
-                    setTable(t)
-                }
-            })
+        if (!isEmpty(table)) {
+            setSchedule(table)
         }
-    }, [view])
+    }, [table])
+
+    useEffect(() => {
+        setLoading(true)
+        if (!isEmpty(schedule) && pattern.lenght !== 0) {
+            pattern.map((p) => {
+                p.PointsInSequence.TimingPointInJourneyPattern.map((point) => {
+                        schedule.vehicleJourneys.ServiceJourney.map((j) => {
+                            j.calls.Call.map((c) => {
+                                if (c.ScheduledStopPointRef.ref === point.ScheduledStopPointRef) {
+                                    point.arrival = c.Arrival
+                                    point.departure = c.Departure
+                                    console.log("done")
+                                }
+                            })
+                        })
+                })
+            })
+            setPat(pattern)
+        }
+    }, [pattern, schedule])
+
+    useEffect(() => {
+        if (pat.length !== 0) {
+            console.log(pat, "from tree")
+            setLoading(false)
+        }
+    }, [pat])
 
     return (
-        <div>
-            <Table numRows={4}>
-                <Column name="Dollars"/>
-            </Table>
-        </div>
-    )
+      <div
+        className="flex flex-col fixed bottom-0 w-full shadow-lg overflow-auto bg-gray-100"
+        style={{ height: '15rem' }}
+      >
+        {loading ? (
+          <Spinner className="m-auto" />
+        ) : (
+          <div className="p-4">
+            <Tree name="Stops" defaultOpen hasIcon={false}>
+              { Array.isArray(pat) && (
+                pat.map((p) => {
+                    return (
+                      <Tree
+                        key={p.serviceJourneyPatternRef}
+                        name={`${p.Name} - ${p.LineRef}`}
+                      >
+                        {p.TimingPointInJourneyPattern.map((point) => {
+                          return (
+                            <Tree
+                              key={point.TimingPointInJourneyPatternId}
+                              name={`${point.name} - ${point.ScheduledStopPointRef}`}
+                              hasIcon={true}
+                            >
+                              <div className="flex flex-col">
+                                <span>Schedule</span>
+                                <span>
+                                  <span className="font-semibold">Arrival:</span>{' '}
+                                  {point.arrival.Time}
+                                </span>
+                                <span>
+                                  <span className="font-semibold">Departure:</span>{' '}
+                                  {point.departure.Time}
+                                </span>
+                              </div>
+                            </Tree>
+                          );
+                        })}
+                      </Tree>
+                    );
+                })
+              )}
+            </Tree>
+          </div>
+        )}
+      </div>
+    );
 }
