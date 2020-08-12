@@ -1,4 +1,4 @@
-// Filtering the map to only display SF Bay Areay
+// Filtering the map to only display SF Bay Area Counties
 export const data = [
     {
         'hc-key': 'us-ca-097',
@@ -49,5 +49,10 @@ export const data = [
         'hc-key': 'us-ca-077',
         'hc-a2': 'SJ',
         'name': 'San Joaquin'
+    },
+    {
+        'hc-key': 'us-ca-087',
+        'hc-a2': 'SC',
+        'name': 'Santa Cruz'
     }
 ];

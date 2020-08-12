@@ -191,7 +191,7 @@ const Timetable = ({ pattern, table }) => {
             })
             setPat(pattern)
         }
-    }, [pattern, schedule])
+    }, [schedule])
 
     useEffect(() => {
         if (pat.length !== 0) {
