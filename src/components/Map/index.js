@@ -41,7 +41,7 @@ const Marker = ({ lat, lng, mapData }) => {
         <div>
             <Popover position={Position.TOP}>
                 <Icon icon="map-marker" className="text-red-600"/>
-                <div className="flex flex-col p-2" style={{minWidth: '70vw'}}>
+                <div className="flex flex-col p-2 map-popover-content">
                     <p className="text-xl mb-2">{mapData.areas[0].name}</p>
                     <span>{mapData.event_type}</span>
                     <span>Status: {mapData.status}</span>

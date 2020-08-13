@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import MapChart from '../Charts/mapChart';
 import TrafficColumnChart from '../Charts/columnChart';
 import { Switch } from './switch';
-import Tree from '../Collapse/index';
+import EventListTree from './barchartEventList';
 import Filter from '../Helpers/filter';
 import { data } from '../../utils/filteredGeoJSON';
 
@@ -83,7 +83,7 @@ export const Events = () => {
 
     return (
         <div>
-            <Switch setView={setView} view={view} />
+            <Switch setView={setView} view={view} className={"md:w-1/2 ml-auto mr-auto md:mr-0 md:w-2/3 md:left-auto"}/>
             {
                 view === 'MAP' ?
                     <>
@@ -91,38 +91,11 @@ export const Events = () => {
                         <MapChart events={events} filteredCounties={filteredList} data={data}/>
                     </>
                 :
-                    <>
-                        <p className="text-center text-xl">SF Bay Area</p>
+                    <div className="md:flex-row-reverse">
+                        <p className="text-center text-xl md:w-2/3 md:ml-auto md:mt-4">SF Bay Area</p>
                         <TrafficColumnChart events={events}/>
-
-                        <div className="flex flex-col fixed bottom-0 w-full shadow-lg overflow-auto bg-gray-100" style={{height: '19rem'}}>
-                            <p className="text-lg font-semibold pl-4 sticky top-0 bg-blue-700 text-white z-10 pt-4 pb-4 shadow-lg">Counties</p>
-                            <div className="p-4">
-                                <Tree name="Counties" defaultOpen hasIcon={false}>
-                                    {
-                                        reducedEvents.map((event) => {
-                                            return <Tree key={event.id} name={`${event.name} - ${event.y}`} hasIcon={true}>
-                                                {
-                                                    event.data.map((data) => {
-                                                        return <Tree key={data.id} name={`${data.name} - ${data.keyword}`}>
-                                                            <div className="flex flex-col">
-                                                                <span>{data.headline}</span>
-                                                                <span><span className="font-semibold">Conditions:</span> {data.roadsState}</span>
-                                                                <span><span className="font-semibold">Direction:</span> {data.direction}</span>
-                                                                <span><span className="font-semibold">From:</span> {data.from}</span>
-                                                                <span><span className="font-semibold">To:</span> {data.to}</span>
-                                                                <span><span className="font-semibold mb-4">Updated:</span> {data.updated}</span>
-                                                            </div>
-                                                        </Tree>
-                                                    })
-                                                }
-                                            </Tree>
-                                        })
-                                    }
-                                </Tree>
-                            </div>
-                        </div>
-                    </>
+                        <EventListTree reducedEvents={reducedEvents} />                        
+                    </div>
             }
         </div>
     )

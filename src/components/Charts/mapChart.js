@@ -7,6 +7,7 @@ import mapDataCA from "@highcharts/map-collection/countries/us/us-ca-all.geo.jso
 import { Spinner, Icon, Button, Dialog } from "@blueprintjs/core";
 
 import CustomMap from '../Map/index';
+import EventList from '../TrafficEvents/mapEventList';
 
 highchartsMap(Highcharts);
 
@@ -182,24 +183,27 @@ export const MapChart = ({ events, data, filteredCounties }) => {
             loading ?
             <Spinner className="mt-32"/>
             :
-            <div>
+            <div className="flex flex-col md:flex-row-reverse">
                 <HighchartsReact
                     constructorType ={'mapChart'}
                     highcharts={Highcharts}
                     options={mapOptions}
+                    className="m-auto"
                 />
-                <div className="w-full flex flex-row justify-between items-center bg-blue-700 text-white font-semibold p-4 shadow-lg">
-                    <p className="text-lg">Latest events</p>
-                    <span className={isVisible ? 'hidden' : `text-sm text-gray-400`}>total: {events.length}</span>
-                    <button className={!isVisible ? 'hidden' : 'block'} onClick={() => {createMapChart(events, data); selectEvent(); setIsVisible(false)}}><Icon icon="reset" size="15" className="text-white"/></button>
-                </div>
-                <div className="w-full text-xs">
-                    <ul className="m-auto overflow-auto shadow-inner"  style={{maxHeight: '43vh'}}>
-                    {
-                        events.map((e, index) => <EventListItem key={e.id} e={e} showEventOnMap={showEventOnMap} selected={selected} setSelected={setSelected} index={index} selectEvent={selectEvent} setIsVisible={setIsVisible} setIsOpen={setIsOpen} setCoordinates={setCoordinates} setMapData={setMapData}/>)
-                    }
-                    </ul>
-                </div>
+                <EventList 
+                  events={events}
+                  showEventOnMap={showEventOnMap} 
+                  selected={selected} 
+                  setSelected={setSelected}
+                  selectEvent={selectEvent} 
+                  setIsVisible={setIsVisible} 
+                  setIsOpen={setIsOpen} 
+                  setCoordinates={setCoordinates} 
+                  setMapData={setMapData}
+                  createMapChart={createMapChart}
+                  isVisible={isVisible}
+                  data={data}
+                />
                 <Dialog
                     isOpen={isOpen}
                     onClose={() => setIsOpen(false)}
@@ -216,50 +220,3 @@ export const MapChart = ({ events, data, filteredCounties }) => {
 }
 
 export default MapChart;
-
-
-export const EventListItem = ({ e, showEventOnMap, selected, setIsVisible, index, selectEvent, setIsOpen, setCoordinates, setMapData }) => {
-    const selectedStyle = selected[index] && "bg-gray-700 text-white"
-    const selectedEventStyle = selected[index] && "text-orange-500"
-
-    return (
-      <li key={e.id}>
-        <div className={`${selectedStyle} flex flex-row items-center shadow-md p-2`}>
-          <div className="p-3 rounded-full bg-gray-400 mr-2">
-            <Icon
-              icon={
-                e.event_type === 'INCIDENT'
-                  ? 'collapse-all'
-                  : e.event_type === 'CONSTRUCTION'
-                  ? 'build'
-                  : 'ban-circle'
-              }
-              iconSize="25"
-              className={`${selectedEventStyle}`}
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-semibold">{e.headline}</span>
-            <span>Event type: <span className={`${selectedEventStyle}`}>{e.event_type}</span></span>
-            <span>Severity: {e.severity}</span>
-            <span>Area: {e.areas[0].name}</span>
-            <span>
-              Updated:{' '}
-              {e.updated
-                .substring(0, e.updated.length - 1)
-                .replace('T', ' at ')}
-            </span>
-            <div className="w-full flex items-center justify-end">
-              <div
-                className="text-blue-600 font-bold mr-4"
-                onClick={() => {showEventOnMap(e.id); selectEvent(index); setIsVisible(true)}}
-              >
-                SHOW
-              </div>
-              <Button icon="map" onClick={() => {setCoordinates({lat:e.geography.coordinates[1], lon:e.geography.coordinates[0]}); setMapData(e); setIsOpen(true); }}/>
-            </div>
-          </div>
-        </div>
-      </li>
-    );
-}

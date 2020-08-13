@@ -56,7 +56,9 @@ export const TrafficColumnChart = ({ events }) => {
             keyword: event.keyword,
             road_state: event.roadState
           }
-          re.data.push([event.from, 1, info])
+          if (re.keyword === event.keyword) {
+            re.data.push([event.from, 1, info])
+          }
         }
       })
     })
@@ -79,13 +81,16 @@ export const TrafficColumnChart = ({ events }) => {
             keyword: event.keyword,
             road_state: event.roadState
           }
-          re.data.push([event.from, 1, info])
+          if (re.keyword === event.keyword) {
+            re.data.push([event.from, 1, info])
+          }
         }
       })
     })
 
     // Create drilldown list
     const drilldownList = reducedEvents.concat(reducedIncidents)
+    console.log(drilldownList)
 
     const columnOpt = {
       chart: {
@@ -124,7 +129,7 @@ export const TrafficColumnChart = ({ events }) => {
       tooltip: {
         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
         pointFormat:
-          '<span>{point.name}</span>: <b>{point.y}</b> CONSTRUCTION<br/>',
+          '<span>{point.name}</span>: <b>{point.y}</b> <span>{point.keyword}</span><br/>',
       },
 
       series: [
@@ -151,11 +156,11 @@ export const TrafficColumnChart = ({ events }) => {
   }
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center md:w-2/3 md:ml-auto">
       {loading ? (
         <Spinner className="mt-24" />
       ) : (
-        <div className="flex items-center overflow-hidden" style={{ maxHeight: '300px', maxWidth: '100vw' }}>
+        <div className="flex items-center overflow-hidden barchart" style={{ maxHeight: '300px', maxWidth: '100vw' }}>
           <ColumnChart highcharts={Highcharts} options={columnOptions} id="barChart"/>
         </div>
       )}

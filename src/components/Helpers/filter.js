@@ -7,7 +7,7 @@ export const Filter = ({ counties, handleFilterMapData, filteredList, resetMapDa
 
     return (
         <div>
-            <div className="flex justify-center items-center fixed right-0 p-2 text-white bg-gray-500 z-10" style={{borderTopLeftRadius: '3px', borderBottomLeftRadius: '3px'}}>
+            <div className="flex justify-center items-center fixed right-0 p-2 text-white bg-gray-500 z-10 cursor-pointer" style={{borderTopLeftRadius: '3px', borderBottomLeftRadius: '3px'}}>
                 <Icon icon="filter" iconSize={20} onClick={() => setIsOpen(true)}/>
             </div>
 
