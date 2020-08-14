@@ -1,3 +1,6 @@
+// This component is used to filter out a specific list of counties
+// to re-render the MAP CHART -> in order to only show specific areas and their events
+
 import React, { useState, useEffect } from 'react';
 import { Icon, Drawer, Checkbox } from "@blueprintjs/core";
 

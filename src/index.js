@@ -3,12 +3,18 @@ import ReactDOM from 'react-dom';
 import './styles/index.css';
 import './tailwind.output.css';
 import * as serviceWorker from './serviceWorker';
+import { ToastProvider } from 'react-toast-notifications'
 
 import AppRouter from './routers/AppRouter';
 require('dotenv').config()
 
 ReactDOM.render(
-    <AppRouter />,
+  <ToastProvider
+    placement="top-center"
+    autoDismiss={true}
+  >
+    <AppRouter />
+  </ToastProvider>,
   document.getElementById('root')
 );
 

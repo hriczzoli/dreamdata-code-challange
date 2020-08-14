@@ -1,3 +1,6 @@
+// The main header of the application that provides navigation
+// to switch between traffic events and transit data
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 

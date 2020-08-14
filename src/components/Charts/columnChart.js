@@ -1,9 +1,12 @@
+// This is a component that displays traffic events organized
+// and grouped in an interactive COLUMN CHART - using Highcharts
+
 import React, { useState, useEffect } from 'react';
 import Highcharts from 'highcharts';
 import ColumnChart from 'highcharts-react-official';
 import drilldown from 'highcharts/modules/drilldown.js';
 import proj4 from "proj4";
-import { Spinner, Icon } from "@blueprintjs/core";
+import { Spinner } from "@blueprintjs/core";
 
 drilldown(Highcharts);
 
@@ -90,7 +93,6 @@ export const TrafficColumnChart = ({ events }) => {
 
     // Create drilldown list
     const drilldownList = reducedEvents.concat(reducedIncidents)
-    console.log(drilldownList)
 
     const columnOpt = {
       chart: {
@@ -100,7 +102,7 @@ export const TrafficColumnChart = ({ events }) => {
         text: 'Number of traffic events in each county',
       },
       subtitle: {
-        text: 'Click the columns to which areas are affected',
+        text: 'Click the columns to see which areas are affected',
       },
       accessibility: {
         announceNewData: {

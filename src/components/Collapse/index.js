@@ -1,7 +1,10 @@
+// This is a TREE VIEW component that renders a list with
+// a collapsable tree view that is animated using REACT SPRING
+
 import React, { memo, useState } from 'react';
 import { useSpring, a } from 'react-spring';
 import { useMeasure, usePrevious } from './helpers';
-import { Frame, Title, Content, toggle } from './styles';
+import { Title, Content, toggle } from './styles';
 import * as Icons from './icons';
 import { Icon } from "@blueprintjs/core";
 

@@ -1,4 +1,8 @@
+// The main component that gets rendered when the application loads
+// displaying an interactive MAP CHART and a LIST OF TRAFFIC EVENTS
+
 import React, { useState, useEffect } from 'react';
+import { useToasts } from 'react-toast-notifications'
 
 import MapChart from '../Charts/mapChart';
 import TrafficColumnChart from '../Charts/columnChart';
@@ -8,6 +12,7 @@ import Filter from '../Helpers/filter';
 import { data } from '../../utils/filteredGeoJSON';
 
 export const Events = () => {
+    const { addToast } = useToasts()
     const [view, setView] = useState('MAP');
     const [events, setEvents] = useState([]);
     const [filteredList, setFilteredList] = useState([]);
@@ -24,6 +29,10 @@ export const Events = () => {
             .then(data => {
                 setEvents(data.events)
             })
+            .catch((error) => {
+                console.error('Error:', error);
+                addToast(error.message, { appearance: 'error' })
+            });
     };
 
     // Construct event objects to be used
@@ -62,9 +71,11 @@ export const Events = () => {
         })
     })
 
-    // Filter counties
+    // Filter counties and events when filters are set for the MAP CHART
     const handleFilterMapData = (countiesList) => {
         const localList = [];
+        setEvents([])
+        const newEventList = [];
         if (countiesList.lenght !== 0) {
             countiesList.map((county) => {
                 data.map((d) => {
@@ -72,13 +83,20 @@ export const Events = () => {
                         localList.push(d)
                     }
                 })
+                events.map((e) => {
+                    if (e.areas[0].name === county) {
+                        newEventList.push(e)
+                    }
+                })
             })
             setFilteredList(localList)
+            setEvents(newEventList)
         }
     }
 
     const resetMapData = () => {
         setFilteredList(data)
+        getTrafficData()
     }
 
     return (

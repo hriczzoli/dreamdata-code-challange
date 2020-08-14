@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Mobile view of the application](dreamdata-app-mobile-view.jpg)
 
-## Available Scripts
+# This is the repo of the application built for the DREAMDATA.IO code challange
 
-In the project directory, you can run:
+## Project layout
+### React Application and it's packages:
+        ⁃	React
+        ⁃	511 SF Bay Open Data APIs (traffic events, transit)
+            https://511.org/
+        ⁃	Blueprintjs
+            https://blueprintjs.com/
+        -   Highcharts
+            https://www.highcharts.com/
+        -   Dotenv
+            https://www.npmjs.com/package/dotenv
+        -   Google-Map-React
+            https://github.com/google-map-react/google-map-react
+        -   Proj4 - JavaScript library to transform coordinates from one coordinate system to another (required for     Highcharts)
+            http://proj4js.org/
+        -   Tailwind.css
+            https://tailwindcss.com/
+        -   Styled components
+            https://styled-components.com/
+
+
+## Current state
+### Features:
+
+    - Events page:
+        - MAP view:
+            - Interactive MAP CHART displaying traffic events
+            - Detailed list of events -> can show on chart or Google Maps
+            - List of events/areas can be filtered
+        - STATS view:
+            - Interactive COLUMN CHART displaying categorized traffic events
+            - Detailed list of events in an animated collapsable tree view
+    - Transit page:
+        - You can select a preferred provider from a list
+        - Then select a preferred line on which the provider operates
+        - After that you can select one of the available timetables
+        - Once all the above is specified we display a detailed schedule with all the stops
+          for a specified route
+    
+    (The project is responsive, however the main focus was on the mobile layout - due to the context of the data that is being displayed considering the use cases)
+
+
+## To run the project
+
+    - Clone the repo
+    - $ yarn install
+    - $ yarn start
+
 
 ### `yarn start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

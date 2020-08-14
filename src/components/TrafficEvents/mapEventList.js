@@ -1,8 +1,8 @@
 // The component that renders the list of traffic events
-// underneath/next to (depending on device ratio of device) of the interactive chart
+// underneath/next to (depending on device ratio) of the interactive chart
 
 import React from 'react';
-import { Icon, Button } from "@blueprintjs/core";
+import { Icon } from "@blueprintjs/core";
 
 import EventListItem from '../TrafficEvents/mapEventListItem';
 

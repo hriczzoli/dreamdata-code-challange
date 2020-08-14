@@ -1,10 +1,13 @@
+// This is a component that displays traffic events organized
+// and grouped in an interactive MAP CHART - using Highcharts
+
 import React, { useState, useEffect } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import highchartsMap from "highcharts/modules/map";
 import proj4 from "proj4";
 import mapDataCA from "@highcharts/map-collection/countries/us/us-ca-all.geo.json";
-import { Spinner, Icon, Button, Dialog } from "@blueprintjs/core";
+import { Spinner, Icon, Dialog } from "@blueprintjs/core";
 
 import CustomMap from '../Map/index';
 import EventList from '../TrafficEvents/mapEventList';
@@ -25,13 +28,15 @@ export const MapChart = ({ events, data, filteredCounties }) => {
     const [coordinates, setCoordinates] = useState({})
     const [mapData, setMapData] = useState({})
 
-
+    // Create the chart on component mount
     useEffect(() => {
         if (events.length !== 0) {
             createMapChart(events, data)
         }
     }, [events])
 
+    // When the list of couties changes -> filter the list of events
+    // displayed on the map as well
     useEffect(() => {
         if (filteredCounties.length !== 0) {
             const cEvents = [];

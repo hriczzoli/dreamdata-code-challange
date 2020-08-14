@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+// This is a custom map component that uses Google Maps
+// to display a MARKER on the map indicating an affected area
+
+import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
-import { Icon, Button, Intent, Popover, PopoverInteractionKind, Position } from "@blueprintjs/core";
+import { Icon, Button, Popover, Position } from "@blueprintjs/core";
 
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_KEY
 
@@ -33,7 +36,6 @@ export default CustomMap;
 const Marker = ({ lat, lng, mapData }) => {
 
     const openGoogleMaps = () => {
-        const windowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
         window.open("https://www.google.com/maps/search/"+ lat + "," + lng +"?hl=en")
     }
 

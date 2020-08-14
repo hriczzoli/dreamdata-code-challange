@@ -40,7 +40,6 @@ const Timetable = ({ pattern, table }) => {
                             if (c.ScheduledStopPointRef.ref === point.ScheduledStopPointRef) {
                                 point.arrival = c.Arrival.Time
                                 point.departure = c.Departure.Time
-                                console.log("done")
                             }
                         })
                     })
@@ -53,8 +52,7 @@ const Timetable = ({ pattern, table }) => {
     // We only render the schedule, once our algorithm is done creating the updated array
     useEffect(() => {
         if (pat.length !== 0 && Array.isArray(pat) && pat !== undefined) {
-            console.log(pat, "from tree")
-            setTimeout(setLoading(false), 4000)
+            setLoading(false)
         }
     }, [pat])
 

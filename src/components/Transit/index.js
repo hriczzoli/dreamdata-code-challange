@@ -2,10 +2,12 @@
 // in the application. -> it renders the FORM and the TIMETABLE components
 
 import React, { useState, useEffect } from 'react';
+import { useToasts } from 'react-toast-notifications'
 
 import TransitForm from './transitForm';
 
 export const Transit = () => {
+    const { addToast } = useToasts()
     const [step, setStep] = useState("")
     const [operators, setOperators] = useState([])
     const [selectedOperator, setSelectedOperator] = useState("")
@@ -52,24 +54,40 @@ export const Transit = () => {
             case "operators":
                 await fetch(`http://api.511.org/transit/${step}?api_key=${process.env.REACT_APP_API_KEY}`)
                     .then(res => res.json())
-                    .then(data => {console.log(data); setOperators(data)})
-                    .catch(error => {console.log(error); setLoading(false); setFailed(true)})
+                    .then(data => setOperators(data))
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        addToast("Unfortunately an error occured and we cannot complete this request", { appearance: 'error' })
+                    });
                     break;
             case "lines":
                 setLoading(true)
                 await fetch(`http://api.511.org/transit/${step}?api_key=${process.env.REACT_APP_API_KEY}&operator_id=${operator_id}`)
                     .then(res => res.json())
                     .then(data => setLines(data))
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        addToast("Unfortunately an error occured and we cannot complete this request", { appearance: 'error' })
+                        setLines([])
+                    });
                 break;
             case "timetable":
                 await fetch(`http://api.511.org/transit/${step}?api_key=${process.env.REACT_APP_API_KEY}&operator_id=${operator_id}&line_id=${line_id}`)
                     .then(res => res.json())
-                    .then(data => {setTimetable(data.Content.TimetableFrame); console.log(data)})
+                    .then(data => setTimetable(data.Content.TimetableFrame))
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        addToast("Unfortunately an error occured and we cannot complete this request", { appearance: 'error' })
+                    });
                 break;
             case "patterns":
                 await fetch(`http://api.511.org/transit/patterns?api_key=${process.env.REACT_APP_API_KEY}&operator_id=${operator_id}&line_id=${line_id}`)
                     .then(res => res.json())
-                    .then(data => {console.log(data.journeyPatterns, 'pattern'); setPattern(data.journeyPatterns)})
+                    .then(data => setPattern(data.journeyPatterns))
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        addToast("Unfortunately an error occured and we cannot complete this request", { appearance: 'error' })
+                    });
                 break;
         }
     }

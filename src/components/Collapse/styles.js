@@ -38,17 +38,6 @@ const Global = createGlobalStyle`
   }
 `
 
-const Frame = styled('div')`
-  position: relative;
-  padding: 4px 0px 0px 0px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow-x: hidden;
-  vertical-align: middle;
-  color: black;
-  fill: black;
-`
-
 const Title = styled('span')`
   vertical-align: middle;
   font-size: 1rem;
@@ -70,4 +59,4 @@ const toggle = {
   verticalAlign: 'middle'
 }
 
-export { Global, Frame, Content, toggle, Title }
+export { Global, Content, toggle, Title }
