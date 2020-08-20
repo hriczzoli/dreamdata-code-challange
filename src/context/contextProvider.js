@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import getTrafficEvents from "../lib/getTrafficEvents";
 import constructEventList from "../lib/constructEventList";
