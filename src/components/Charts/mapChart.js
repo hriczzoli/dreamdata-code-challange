@@ -19,7 +19,7 @@ if (typeof window !== "undefined") {
 }
 
 
-export const MapChart = ({ events, data, filteredCounties }) => {
+const MapChart = ({ events, data, filteredCounties }) => {
     const [loading, setLoading] = useState(true)
     const [mapOptions, setMapOptions] = useState({})
     const [selected, setSelected] = useState(Array(events.length).fill(false))
@@ -42,7 +42,7 @@ export const MapChart = ({ events, data, filteredCounties }) => {
             const cEvents = [];
             filteredCounties.map((fc) => {
                 events.map((ev) => {
-                    if (fc.name === ev.areas[0].name) {
+                    if (fc.name === ev.name) {
                         cEvents.push(ev)
                     }
                 })
@@ -53,31 +53,13 @@ export const MapChart = ({ events, data, filteredCounties }) => {
 
     // Highcharts map chart configuration
     const createMapChart = (events, mapData) => {
-        const eventList = [];
-        events.map((event) => 
-            eventList.push({
-                z: 10,
-                id: event.id,
-                name: event.areas[0].name,
-                keyword: event.event_type,
-                lat: event.geography.coordinates[1],
-                lon: event.geography.coordinates[0],
-                severity: event.severity,
-                updated: event.updated.substring(0, event.updated.length - 1).replace('T', ' at '),
-                status: event.status,
-                roadsState: event.roads[0].state,
-                from: event.roads[0].from,
-                to: event.roads[0].to,
-                direction: event.roads[0].direction
-            })
-        );
-
-        const constructions = eventList.filter((ev) => {
+        // Filter out CONSTRUCTIONS for chart
+        const constructions = events.filter((ev) => {
           return ev.keyword === 'CONSTRUCTION'
         })
 
         // Filter out INCIDENTS for chart
-        const incidents = eventList.filter((ev) => {
+        const incidents = events.filter((ev) => {
           return ev.keyword === 'INCIDENT'
         })
 

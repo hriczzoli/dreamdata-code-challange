@@ -6,7 +6,7 @@ import { useToasts } from 'react-toast-notifications'
 
 import TransitForm from './transitForm';
 
-export const Transit = () => {
+const Transit = () => {
     const { addToast } = useToasts()
     const [step, setStep] = useState("")
     const [operators, setOperators] = useState([])

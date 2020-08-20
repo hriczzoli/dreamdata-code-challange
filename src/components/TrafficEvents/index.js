@@ -1,75 +1,27 @@
 // The main component that gets rendered when the application loads
 // displaying an interactive MAP CHART and a LIST OF TRAFFIC EVENTS
 
-import React, { useState, useEffect } from 'react';
-import { useToasts } from 'react-toast-notifications'
+import React, { useState, useEffect, useContext } from 'react';
 
 import MapChart from '../Charts/mapChart';
 import TrafficColumnChart from '../Charts/columnChart';
-import { Switch } from './switch';
+import Switch from './switch';
 import EventListTree from './barchartEventList';
 import Filter from '../Helpers/filter';
 import { data } from '../../utils/filteredGeoJSON';
+import { AppContext } from '../../context/contextProvider';
 
-export const Events = () => {
-    const { addToast } = useToasts()
+const Events = () => {
+    const { eventList, reducedEvents } = useContext(AppContext);
     const [view, setView] = useState('MAP');
     const [events, setEvents] = useState([]);
     const [filteredList, setFilteredList] = useState([]);
-
-    // Fetch traffic info on component mount
+    
     useEffect(() => {
-        getTrafficData()
-    }, [])
-
-    // Function for requesting traffic information from API
-    async function getTrafficData() {
-        await fetch(`http://api.511.org/Traffic/Events?api_key=${process.env.REACT_APP_API_KEY}`)
-            .then(res => res.json())
-            .then(data => {
-                setEvents(data.events)
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                addToast(error.message, { appearance: 'error' })
-            });
-    };
-
-    // Construct event objects to be used
-    const eventList = [];
-        events.map((event) => 
-            eventList.push({
-                z: 10,
-                id: event.id,
-                name: event.areas[0].name,
-                keyword: event.event_type,
-                headline: event.headline,
-                lat: event.geography.coordinates[1],
-                lon: event.geography.coordinates[0],
-                severity: event.severity,
-                updated: event.updated.substring(0, event.updated.length - 1).replace('T', ' at '),
-                status: event.status,
-                roadsState: event.roads[0].state,
-                from: event.roads[0].from,
-                to: event.roads[0].to,
-                direction: event.roads[0].direction
-            })
-        );
-
-    // Reduce events to display organized list of data
-    const reducedEvents = Object.values(eventList.reduce((a, {name, keyword, roadsState}) => {
-        a[name] = a[name] || {name, y: 0, keyword, roadsState, drilldown: name, id: name, data: []};
-        a[name].y++;
-        return a;
-      }, Object.create(null)))
-  
-    reducedEvents.map((re) => {
-        eventList.map((event) => {
-          if (re.name === event.name) {
-            re.data.push(event)
-          }
-        })
-    })
+        if (eventList.length !== 0) {
+            setEvents(eventList)
+        }   
+    }, [eventList])
 
     // Filter counties and events when filters are set for the MAP CHART
     const handleFilterMapData = (countiesList) => {
@@ -84,7 +36,7 @@ export const Events = () => {
                     }
                 })
                 events.map((e) => {
-                    if (e.areas[0].name === county) {
+                    if (e.name === county) {
                         newEventList.push(e)
                     }
                 })
@@ -96,7 +48,7 @@ export const Events = () => {
 
     const resetMapData = () => {
         setFilteredList(data)
-        getTrafficData()
+        setEvents(eventList)
     }
 
     return (
@@ -105,13 +57,13 @@ export const Events = () => {
             {
                 view === 'MAP' ?
                     <>
-                        <Filter counties={reducedEvents} handleFilterMapData={handleFilterMapData} filteredList={filteredList} resetMapData={resetMapData}/>
+                        <Filter counties={reducedEvents || []} handleFilterMapData={handleFilterMapData} filteredList={filteredList} resetMapData={resetMapData}/>
                         <MapChart events={events} filteredCounties={filteredList} data={data}/>
                     </>
                 :
                     <div className="md:flex-row-reverse">
                         <p className="text-center text-xl md:w-2/3 md:ml-auto md:mt-4">SF Bay Area</p>
-                        <TrafficColumnChart events={events}/>
+                        <TrafficColumnChart />
                         <EventListTree reducedEvents={reducedEvents} />                        
                     </div>
             }

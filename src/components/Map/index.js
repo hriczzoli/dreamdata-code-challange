@@ -44,12 +44,12 @@ const Marker = ({ lat, lng, mapData }) => {
             <Popover position={Position.TOP}>
                 <Icon icon="map-marker" className="text-red-600"/>
                 <div className="flex flex-col p-2 map-popover-content">
-                    <p className="text-xl mb-2">{mapData.areas[0].name}</p>
-                    <span>{mapData.event_type}</span>
+                    <p className="text-xl mb-2">{mapData.name}</p>
+                    <span>{mapData.keyword}</span>
                     <span>Status: {mapData.status}</span>
-                    <span>State: {mapData.roads[0].state}</span>
-                    <span>From: {mapData.roads[0].from}</span>
-                    <span>Direction: {mapData.roads[0].direction}</span>
+                    <span>State: {mapData.roadsState}</span>
+                    <span>From: {mapData.from}</span>
+                    <span>Direction: {mapData.direction}</span>
                     <div className="flex justify-end w-full mt-6">
                         <Button onClick={openGoogleMaps} style={{background: '#4299e1', color: 'white', marginRight: '1rem'}}>OPEN in GMap</Button>
                         <Button className="bp3-popover-dismiss" style={{background: '#e53e3e', color: 'white'}}>Dismiss</Button>

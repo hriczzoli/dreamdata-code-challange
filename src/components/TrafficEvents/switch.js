@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-export const Switch = ({ view, setView, className }) => {
+const Switch = ({ view, setView, className }) => {
 
     return (
         <div className={`flex justify-around bg-gray-200 w-full mb-3 sm:mt-0 shadow-md ${className}`}>

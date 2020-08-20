@@ -4,9 +4,15 @@
 import React, { useState, useEffect } from 'react';
 import { Icon, Drawer, Checkbox } from "@blueprintjs/core";
 
-export const Filter = ({ counties, handleFilterMapData, filteredList, resetMapData }) => {
+const Filter = ({ counties, handleFilterMapData, filteredList, resetMapData }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [filterList, setFilterList] = useState([])
+    const [cleared, setCleared] = useState(false)
+
+    const handleClearFilterList = () => {
+        setCleared(true)
+        setFilterList([])
+    }
 
     return (
         <div>
@@ -30,7 +36,7 @@ export const Filter = ({ counties, handleFilterMapData, filteredList, resetMapDa
                                         {co.name}
                                     </span>
                                     <span>
-                                        <CustomCheckBox county={co.name} filterList={filterList} setFilterList={setFilterList} filteredList={filteredList}/>
+                                        <CustomCheckBox county={co.name} filterList={filterList} setFilterList={setFilterList} filteredList={filteredList} cleared={cleared}/>
                                     </span>
                                 </li>
                             })
@@ -38,7 +44,7 @@ export const Filter = ({ counties, handleFilterMapData, filteredList, resetMapDa
                     </ul>
                     <div className="flex flex-row w-full justify-end items-center">
                         <button
-                            onClick={() => {resetMapData(); setIsOpen(false)}}
+                            onClick={() => {resetMapData(); setIsOpen(false); handleClearFilterList()}}
                             className="text-red-700"
                         >CLEAR
                         </button>
@@ -56,14 +62,22 @@ export const Filter = ({ counties, handleFilterMapData, filteredList, resetMapDa
 
 export default Filter;
 
-const CustomCheckBox = ({ county, setFilterList, filterList, filteredList }) => {
+const CustomCheckBox = ({ county, setFilterList, filterList, filteredList, cleared }) => {
     const [isChecked, setIsChecked] = useState(false)
+
+    useEffect(() => {
+        if (cleared) {
+            setIsChecked(false)
+        }
+    }, [cleared])
 
     useEffect(() => {
         if (filteredList.legngth !== 0) {
             filteredList.map((c) => {
                 if (c.name === county) {
                     setIsChecked(true)
+                } else if (cleared) {
+                    setIsChecked(false)
                 }
             })
         }

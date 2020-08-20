@@ -4,17 +4,20 @@ import './styles/index.css';
 import './tailwind.output.css';
 import * as serviceWorker from './serviceWorker';
 import { ToastProvider } from 'react-toast-notifications'
+import ContextProvider from "./context/contextProvider";
 
 import AppRouter from './routers/AppRouter';
 require('dotenv').config()
 
 ReactDOM.render(
-  <ToastProvider
-    placement="top-center"
-    autoDismiss={true}
-  >
-    <AppRouter />
-  </ToastProvider>,
+  <ContextProvider>
+    <ToastProvider
+      placement="top-center"
+      autoDismiss={true}
+    >
+      <AppRouter />
+    </ToastProvider>
+  </ContextProvider>,
   document.getElementById('root')
 );
 
