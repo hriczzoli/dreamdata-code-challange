@@ -8,7 +8,7 @@ import { Title, Content, toggle } from './styles';
 import * as Icons from './icons';
 import { Icon } from "@blueprintjs/core";
 
-export const Tree = memo(({ children, name, style, defaultOpen = false, hasIcon }) => {
+const Tree = memo(({ children, name, style, defaultOpen = false, hasIcon }) => {
   const [isOpen, setOpen] = useState(defaultOpen);
   const previous = usePrevious(isOpen);
   const [bind, { height: viewHeight }] = useMeasure();

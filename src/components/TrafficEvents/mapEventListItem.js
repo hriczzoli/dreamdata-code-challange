@@ -4,7 +4,7 @@
 import React from 'react';
 import { Icon, Button } from "@blueprintjs/core";
 
-export const EventListItem = ({ e, showEventOnMap, selected, setIsVisible, index, selectEvent, setIsOpen, setCoordinates, setMapData }) => {
+const EventListItem = ({ e, showEventOnMap, selected, setIsVisible, index, selectEvent, setIsOpen, setCoordinates, setMapData }) => {
     const selectedStyle = selected[index] && "bg-gray-700 text-white"
     const selectedEventStyle = selected[index] && "text-orange-500"
 
@@ -14,9 +14,9 @@ export const EventListItem = ({ e, showEventOnMap, selected, setIsVisible, index
           <div className="p-3 rounded-full bg-gray-400 mr-2">
             <Icon
               icon={
-                e.event_type === 'INCIDENT'
+                e.keyword === 'INCIDENT'
                   ? 'collapse-all'
-                  : e.event_type === 'CONSTRUCTION'
+                  : e.keyword === 'CONSTRUCTION'
                   ? 'build'
                   : 'ban-circle'
               }
@@ -28,7 +28,7 @@ export const EventListItem = ({ e, showEventOnMap, selected, setIsVisible, index
             <span className="font-semibold">{e.headline}</span>
             <span>Event type: <span className={`${selectedEventStyle}`}>{e.event_type}</span></span>
             <span>Severity: {e.severity}</span>
-            <span>Area: {e.areas[0].name}</span>
+            <span>Area: {e.name}</span>
             <span>
               Updated:{' '}
               {e.updated
@@ -42,7 +42,7 @@ export const EventListItem = ({ e, showEventOnMap, selected, setIsVisible, index
               >
                 SHOW
               </div>
-              <Button icon="map" onClick={() => {setCoordinates({lat:e.geography.coordinates[1], lon:e.geography.coordinates[0]}); setMapData(e); setIsOpen(true); }}/>
+              <Button icon="map" onClick={() => {setCoordinates({lat:e.lat, lon:e.lon}); setMapData(e); setIsOpen(true); }}/>
             </div>
           </div>
         </div>

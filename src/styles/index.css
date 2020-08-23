@@ -17,7 +17,7 @@ code {
     monospace;
 }
 
-
+/* Customise HIGHCHARTS charts to fit application design - custom styles */
 .highcharts-tooltip {
   display: flex;
 }
@@ -37,32 +37,39 @@ code {
   display: none;
 }
 
+/* Remove focus from buttons after click event */
 button:focus {
   outline: none;
   box-shadow: none;
 }
 
+/* Style list of events underneath the MAP chart */
 .event-list-for-map {
   max-height: 43vh;
 }
 
+/* Style list of events underneath the COLUMN chart */
 .barchart-event-list {
   height: 17rem;
 }
 
+/* Custom styles for the COLUMN chart in the 'STATS' view */
 .barchart {
   max-height: 300px;
   max-width: 100vw;
 }
 
+/* Set height for main container on the content for the transit 'page' */
 .transit-containerdiv {
   height: 95vh;
 }
 
+/* Style popover - used for the marker on Google Maps after selecting a specific traffic event */
 .map-popover-content {
   width: 70vw;
 }
 
+/* Specify height for tha container that displays final timetable of a specific provider on a given route */
 .transit-timetable-container {
   height: 11rem;
 }
@@ -80,7 +87,7 @@ button:focus {
     height: 100% !important;
   }
   .barchart {
-    max-height: 100% !important;
+    max-height: 84vh !important;
   }
   .barchart .highcharts-container {
       width: 100% !important;

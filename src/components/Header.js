@@ -14,7 +14,7 @@ import {
     Icon
 } from "@blueprintjs/core";
 
-export const Header = ({ history }) => {
+const Header = ({ history }) => {
     const location = useLocation();
 
     return (
